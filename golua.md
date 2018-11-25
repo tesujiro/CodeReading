@@ -5,14 +5,88 @@ https://github.com/Azure/golua
 
 # basic code path
 
+cmd/glua/main.go#main
+- lua/lua.go#State.Main
+  - lua/auxiliary.go#State.ExecFile(file string)
+    - lua/lua.go#State.ExecChunk
+      - lua/lua.go#state.LoadChunk
+        - lua/state.go#state.load() *Closure
+      - lua/lua.go#state.Call <- call a function on the stack with arguments
+
 
 # Where is the lexer?
+
+pkg/packer/
 
 # Where is the parser?
 
 # Where is the VM?
 
-# Structure
+# key data structure
+
+## lua/closure.go
+Closure struct {
+	binary *binary.Prototype
+	native Func
+	upvals []*upValue
+}
+upValue struct {
+	frame *Frame // frame upValue was opened within.
+	ident string // name if debugging enabled.
+	local bool   // true if in frame local's stack.
+	index int    // index into stack or enclosing function.
+	value Value  // if closed.
+}
+
+## lua/binary
+Prototype struct {
+	Source   string
+	SrcPos   uint32
+	EndPos   uint32
+	Params   byte
+	Vararg   byte
+	Stack    byte
+	Code     []uint32
+	Consts   []interface{}
+	UpValues []UpValue
+	Protos   []Prototype
+	PcLnTab  []uint32
+	Locals   []LocalVar
+	UpNames  []string
+}
+
+Header struct {
+	Signature  [4]byte
+	Version    byte
+	Format     byte
+	LuacData   [6]byte
+	GoIntSize  byte
+	SizetSize  byte
+	InstrSize  byte
+	LuaIntSize byte
+	LuaNumSize byte
+	LuacIntEnc int64
+	LuacNumEnc float64
+}
+
+LocalVar struct {
+	Name string
+	Live uint32
+	Dead uint32
+}
+
+UpValue struct {
+	InStack byte
+	Index   byte
+}
+
+Chunk struct {
+	Header Header
+	Entry  Prototype
+}
+
+
+# Files
 ```
 .
 ├── [  96]  cmd
