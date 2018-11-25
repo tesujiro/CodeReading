@@ -25,6 +25,7 @@ pkg/packer/
 # key data structure
 
 ## lua/closure.go
+```
 Closure struct {
 	binary *binary.Prototype
 	native Func
@@ -37,8 +38,10 @@ upValue struct {
 	index int    // index into stack or enclosing function.
 	value Value  // if closed.
 }
+```
 
 ## lua/binary
+```
 Prototype struct {
 	Source   string
 	SrcPos   uint32
@@ -85,6 +88,7 @@ Chunk struct {
 	Entry  Prototype
 }
 
+```
 
 # Files
 ```
