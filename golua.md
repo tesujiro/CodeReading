@@ -13,7 +13,6 @@ https://github.com/Azure/golua
 # Where is the VM?
 
 # Structure
-```HTML
 <!DOCTYPE html>
 <html>
 <head>
@@ -176,5 +175,4 @@ https://github.com/Azure/golua
 </body>
 </html>
 
-```
 
