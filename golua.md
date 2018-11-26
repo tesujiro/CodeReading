@@ -22,7 +22,7 @@ pkg/packer/
 
 # Where is the VM?
 
-# key data structure
+# key part of data structure
 
 ## lua/closure.go
 ```
