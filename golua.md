@@ -11,6 +11,26 @@ cmd/glua/main.go#main
     - lua/lua.go#State.ExecChunk
       - lua/lua.go#state.LoadChunk
         - lua/state.go#state.load() *Closure
+	  - cmd := exec.Command("luac", "-o", tmp, "-")
+	  - chunk, err := binary.Load(src)
+	    - lua/binary/binary.go Load(src)
+	      - lua/binary/decode.go decode(bytes.NewBuffer(data), &chunk)
+	        - set Chunk.Header
+		- decodePrototype(r, &chunk.Entry)
+	          - // decode line start
+	          - // decode line end
+		  - // decode number of parameters
+		  - // decode is varadic
+		  - // decode maximum stack size
+		  - // decode instruction bytecode
+		  - // decode constants
+		  - // decode upvalues
+		  - // decode nested closure prototypes
+		  - // decode line info (pc -> line)
+		  - // decode local variables
+		  - // decode upvalue names
+	  - cls := newLuaClosure(&chunk.Entry)
+	- state.frame().push(cls)
       - lua/lua.go#state.Call <- call a function on the stack with arguments
 
 
