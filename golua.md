@@ -35,6 +35,7 @@ cmd/glua/main.go#main
 	      - cls.upvals = make([]*upValue, len(proto.UpValues))  <-- upvals: to save values of parent function 
 	- state.frame().push(cls)
       - lua/lua.go#state.Call <- call a function on the stack with arguments
+
 ```
 // Call calls a function.
 //
@@ -53,6 +54,7 @@ cmd/glua/main.go#main
       - c, ok  = value.(*Closure)
       - state.call(&Frame{closure: c, fnID: funcID, rets: rets})
 	- lua/state.go call
+
 ```
 // Calls a function (Go or Lua). The function to be called is at funcID in the stack.
 // The arguments are on the stack in direct order following the function.
