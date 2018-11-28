@@ -48,10 +48,10 @@ cmd/glua/main.go#main
 // order (the first result is pushed first), so that after the call the last result is on the top of the stack.
 ```
 
-        funcID = state.frame().absindex(-(args + 1))
-        value  = state.frame().get(funcID - 1)
-        c, ok  = value.(*Closure)
-        state.call(&Frame{closure: c, fnID: funcID, rets: rets})
+      - funcID = state.frame().absindex(-(args + 1))
+      - value  = state.frame().get(funcID - 1)
+      - c, ok  = value.(*Closure)
+      - state.call(&Frame{closure: c, fnID: funcID, rets: rets})
 	- lua/state.go call
 ```
 // Calls a function (Go or Lua). The function to be called is at funcID in the stack.
