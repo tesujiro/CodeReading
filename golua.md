@@ -30,9 +30,34 @@ cmd/glua/main.go#main
 		  - // decode local variables
 		  - // decode upvalue names
 	  - cls := newLuaClosure(&chunk.Entry)
+	    - lua/closure.go newLuaClosure(proto *binary.Prototype) *Closure
+	      - cls := &Closure{binary: proto}
+	      - cls.upvals = make([]*upValue, len(proto.UpValues))  <-- upvals: to save values of parent function 
 	- state.frame().push(cls)
       - lua/lua.go#state.Call <- call a function on the stack with arguments
-
+```
+// Call calls a function.
+//
+// To call a function you must use the following protocol: first, the function to be called is pushed onto the stack;
+// then, the arguments to the function are pushed in direct order; that is, the first argument is pushed first.
+// Finally you call lua_call; nargs is the number of arguments that you pushed onto the stack. All arguments and the
+// function value are popped from the stack when the function is called. The function results are pushed onto the stack
+// when the function returns. The number of results is adjusted to nresults, unless nresults is LUA_MULTRET.
+// In this case, all results from the function are pushed; Lua takes care that the returned values fit into the stack
+// space, but it does not ensure any extra space in the stack. The function results are pushed onto the stack in direct
+// order (the first result is pushed first), so that after the call the last result is on the top of the stack.
+```
+        funcID = state.frame().absindex(-(args + 1))
+        value  = state.frame().get(funcID - 1)
+        c, ok  = value.(*Closure)
+        state.call(&Frame{closure: c, fnID: funcID, rets: rets})
+	- lua/state.go call
+```
+// Calls a function (Go or Lua). The function to be called is at funcID in the stack.
+// The arguments are on the stack in direct order following the function.
+//
+// On return, all the results are on the stack, starting at the original function position.
+```
 
 # Where is the lexer?
 
