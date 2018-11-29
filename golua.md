@@ -3,7 +3,7 @@ https://github.com/Azure/golua
 
 # Run
 
-# Basic code path 1 : main - compile - load - new closure
+# Basic code path 1 : main - compile - load to chunk - new closure
 cmd/glua/main.go#main
 - lua/lua.go#State.Main
   - lua/auxiliary.go#State.ExecFile(file string)
