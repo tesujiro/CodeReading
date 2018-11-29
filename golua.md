@@ -71,7 +71,7 @@ lua/lua.go#state.call (fr \*Frame) {
   return
 
 # Basic code path 3: execute
-``` go:lua/exec.go
+``` golang:lua/exec.go
 func execute(vm \*v53) {
 	for cmd, instr := vm.fetch(); cmd != nil; cmd, instr = cmd(vm, instr) {
 		vm.trace(instr)
