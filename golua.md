@@ -46,7 +46,6 @@ cmd/glua/main.go#main
 // space, but it does not ensure any extra space in the stack. The function results are pushed onto the stack in direct
 // order (the first result is pushed first), so that after the call the last result is on the top of the stack.
 ```
-
 lua/lua.go#state.Call <- call a function on the stack with arguments
   - funcID = state.frame().absindex(-(args + 1))
   - value  = state.frame().get(funcID - 1)
@@ -60,7 +59,57 @@ lua/lua.go#state.Call <- call a function on the stack with arguments
 //
 // On return, all the results are on the stack, starting at the original function position.
 ```
+lua/lua.go#state.call (fr \*Frame) {
+  args := state.frame().popN(state.frame().gettop() - fr.fnID + 1)[1:]
+  fr.pushN(args)
+  if fr.function().isLua() {
+    execute(&v53{state})
+  } else if fr.function().isGo() {
+    rets := fr.popN(fr.function().native(state))
+    fr.caller().pushN(rets)
+  }
+  return
 
+# Basic code path 3: execute
+lua/exec.go#execute
+func execute(vm \*v53) {
+	for cmd, instr := vm.fetch(); cmd != nil; cmd, instr = cmd(vm, instr) {
+		vm.trace(instr)
+	}
+}
+
+// fetch returns the next opcode function and instruction to execute
+// incrementing the frame's instruction pointer (pc).
+func (vm \*v53) fetch() (cmd, vm.Instr) {
+	i := vm.thread().frame().step(1)
+	return ops[i.Code()], i
+}
+
+// cmd is an executor for a lua opcode.
+type cmd func(\*v53, vm.Instr) (cmd, vm.Instr)
+
+// ops is a table of lua v53 opcode commands.
+var ops []cmd
+
+func init() {
+	ops = []cmd{
+		vm.MOVE: func(vm *v53, instr vm.Instr) (cmd, vm.Instr) {
+			vm.move(instr)
+			return vm.fetch()
+		},
+		vm.LOADK: func(vm *v53, instr vm.Instr) (cmd, vm.Instr) {
+			vm.loadk(instr)
+			return vm.fetch()
+		},
+		,
+		,
+		,
+		vm.EXTRAARG: func(vm *v53, instr vm.Instr) (cmd, vm.Instr) {
+			vm.extraarg(instr)
+			return vm.fetch()
+		},
+	}
+}
 
 # Where is the lexer?
 
