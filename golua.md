@@ -3,8 +3,7 @@ https://github.com/Azure/golua
 
 # Run
 
-# basic code path 1
-
+# Basic code path 1 : main - compile - load - new closure
 cmd/glua/main.go#main
 - lua/lua.go#State.Main
   - lua/auxiliary.go#State.ExecFile(file string)
@@ -36,9 +35,8 @@ cmd/glua/main.go#main
 	- state.frame().push(cls)
       - lua/lua.go#state.Call <- call a function on the stack with arguments
 
+# Basic code path 2: call a function
 ```
-```
-# basic code path 2: call a function
 // To call a function you must use the following protocol: first, the function to be called is pushed onto the stack;
 // then, the arguments to the function are pushed in direct order; that is, the first argument is pushed first.
 // Finally you call lua_call; nargs is the number of arguments that you pushed onto the stack. All arguments and the
@@ -47,8 +45,9 @@ cmd/glua/main.go#main
 // In this case, all results from the function are pushed; Lua takes care that the returned values fit into the stack
 // space, but it does not ensure any extra space in the stack. The function results are pushed onto the stack in direct
 // order (the first result is pushed first), so that after the call the last result is on the top of the stack.
+```
 
-- lua/lua.go#state.Call <- call a function on the stack with arguments
+lua/lua.go#state.Call <- call a function on the stack with arguments
   - funcID = state.frame().absindex(-(args + 1))
   - value  = state.frame().get(funcID - 1)
   - c, ok  = value.(\*Closure)
