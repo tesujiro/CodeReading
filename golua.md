@@ -112,11 +112,9 @@ func init() {
 }
 ```
 
-# Where is the lexer?
-
-pkg/packer/
-
 # Where is the parser?
+There is no parser, this project is a implementation of Lua VM.
+In lua/state.go, "luac" is used for compiling source to bytecode.
 
 # Where is the VM?
 
@@ -186,6 +184,46 @@ Chunk struct {
 	Entry  Prototype
 }
 
+```
+
+# Instruction set of Lua VM
+
+```
+MOVE	A B R(A) := R(B)
+LOADK	A Bx R(A) := K(Bx)
+LOADBOOL A B C R(A) := (Bool)B; if (C) PC++
+LOADNIL A B R(A) := ... := R(B) := nil
+GETUPVAL A B R(A) := U[B]
+GETGLOBAL A Bx R(A) := G[K(Bx)]
+GETTABLE A B C R(A) := R(B)[RK(C)]
+SETGLOBAL A Bx G[K(Bx)] := R(A)
+SETUPVAL A B U[B] := R(A)
+SETTABLE A B C R(A)[RK(B)] := RK(C)
+NEWTABLE A B C R(A) := {} (size = B,C)
+SELF A B C R(A+1) := R(B); R(A) := R(B)[RK(C)]
+ADD A B C R(A) := RK(B) + RK(C)
+SUB A B C R(A) := RK(B) - RK(C)
+MUL A B C R(A) := RK(B) * RK(C)
+DIV A B C R(A) := RK(B) / RK(C)
+POW A B C R(A) := RK(B) ^ RK(C)
+UNM A B R(A) := -R(B)
+NOT A B R(A) := not R(B)
+CONCAT A B C R(A) := R(B) .. ... .. R(C)
+JMP sBx PC += sBx
+EQ A B C if ((RK(B) == RK(C)) ~= A) then PC++
+LT A B C if ((RK(B) < RK(C)) ~= A) then PC++
+LE A B C if ((RK(B) <= RK(C)) ~= A) then PC++
+TEST A B C if (R(B) <=> C) then R(A) := R(B) else PC++
+CALL A B C R(A), ... ,R(A+C-2) := R(A)(R(A+1), ... ,R(A+B-1))
+TAILCALL A B C return R(A)(R(A+1), ... ,R(A+B-1))
+RETURN A B return R(A), ... ,R(A+B-2) (see note)
+FORLOOP A sBx R(A)+=R(A+2); if R(A) <?= R(A+1) then PC+= sBx
+TFORLOOP A C R(A+2), ... ,R(A+2+C) := R(A)(R(A+1), R(A+2));
+TFORPREP A sBx if type(R(A)) == table then R(A+1):=R(A), R(A):=next;
+SETLIST A Bx R(A)[Bx-Bx%FPF+i] := R(A+i), 1 <= i <= Bx%FPF+1
+SETLISTO A Bx
+CLOSE A close stack variables up to R(A)
+CLOSURE A Bx R(A) := closure(KPROTO[Bx], R(A), ... ,R(A+n))
 ```
 
 # Files
