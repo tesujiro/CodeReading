@@ -3,7 +3,7 @@ https://github.com/Azure/golua
 
 # Run
 
-# basic code path
+# basic code path 1
 
 cmd/glua/main.go#main
 - lua/lua.go#State.Main
@@ -37,8 +37,8 @@ cmd/glua/main.go#main
       - lua/lua.go#state.Call <- call a function on the stack with arguments
 
 ```
-// Call calls a function.
-//
+```
+# basic code path 2: call a function
 // To call a function you must use the following protocol: first, the function to be called is pushed onto the stack;
 // then, the arguments to the function are pushed in direct order; that is, the first argument is pushed first.
 // Finally you call lua_call; nargs is the number of arguments that you pushed onto the stack. All arguments and the
@@ -47,12 +47,13 @@ cmd/glua/main.go#main
 // In this case, all results from the function are pushed; Lua takes care that the returned values fit into the stack
 // space, but it does not ensure any extra space in the stack. The function results are pushed onto the stack in direct
 // order (the first result is pushed first), so that after the call the last result is on the top of the stack.
-```
-      - funcID = state.frame().absindex(-(args + 1))
-      - value  = state.frame().get(funcID - 1)
-      - c, ok  = value.(*Closure)
-      - state.call(&Frame{closure: c, fnID: funcID, rets: rets})
-        - lua/state.go call
+
+- lua/lua.go#state.Call <- call a function on the stack with arguments
+  - funcID = state.frame().absindex(-(args + 1))
+  - value  = state.frame().get(funcID - 1)
+  - c, ok  = value.(\*Closure)
+  - state.call(&Frame{closure: c, fnID: funcID, rets: rets})
+    - lua/state.go call
 
 ```
 // Calls a function (Go or Lua). The function to be called is at funcID in the stack.
