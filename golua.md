@@ -113,7 +113,8 @@ func init() {
 ```
 
 # Basic code path 3: instructions
-``` go:lua/lvm.go 
+```go
+// lua/lvm.go 
 ```
 
 # Where is the parser?
