@@ -112,6 +112,10 @@ func init() {
 }
 ```
 
+# Basic code path 3: instructions
+``` go:lua/lvm.go
+```
+
 # Where is the parser?
 There is no parser, this project is a implementation of Lua VM.
 In lua/state.go, "luac" is used for compiling source to bytecode.
