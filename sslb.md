@@ -1,4 +1,6 @@
 # Repository
+SSLB (Super Simple Load Balancer) ver 0.1.0
+It's a Super Simple Load Balancer, just a little project to achieve some kind of performance.
 https://github.com/eduardonunesp/sslb
 
 # Run
