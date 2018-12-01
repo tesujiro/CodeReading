@@ -84,24 +84,24 @@ func preProcessWorker(frontend *Frontend) *Backend {
   - invoked by: Server coroutine
   - description: invoke one when accept one rpc request 
 
-- RunFrontendServer
+- FrontendServer
   - source: lb/server.go#Run
   - invoked by: main coroutine
   - description: invoke ones for each frontend configurations
 
 - HeartCheck
-  - lb/backend.go#HeartCheck
-  - invoked by: RunFrontendServer coroutine
+  - source: lb/backend.go#HeartCheck
+  - invoked by: FrontendServer coroutine
   - description: invoke ones for each backend configurations of the frontend
 
 - worker in pool
-  - lb/worker.go#
-  - invoked by: RunFrontendServer coroutine
+  - source: lb/worker.go#Run
+  - invoked by: FrontendServer coroutine
   - description: invoke one when one http request for FrontendServer arrives
 
 - websocket frontend & websocket backend
-  - lb/request.go#
-  - invoked by: RunFrontendServer coroutine
+  - source: lb/request.go#copyBidir
+  - invoked by: FrontendServer coroutine
   - description: HijackWebSocket
 
 # What is basic roll
