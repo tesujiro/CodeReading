@@ -1,6 +1,6 @@
 # Repository
-SSLB (Super Simple Load Balancer) ver 0.1.0
-It's a Super Simple Load Balancer, just a little project to achieve some kind of performance.
+- SSLB (Super Simple Load Balancer) ver 0.1.0
+- It's a Super Simple Load Balancer, just a little project to achieve some kind of performance.
 https://github.com/eduardonunesp/sslb
 
 # Run
@@ -106,18 +106,9 @@ func preProcessWorker(frontend *Frontend) *Backend {
   - invoked by: FrontendServer coroutine
   - description: HijackWebSocket
 
-# What is basic roll
-
-Server RPC:
-  Host/Port:
-    GeneralConfig.RPCHost/GeneralConfig.RPCPort
-  Protocol:
-    HTTP  net.rpc.HandleHTTP
-
-
 # Sources
 ```
-tree -h -P "*.go"
+tree -h -P "\*.go"
 .
 └── [ 384]  sslb
     ├── [  96]  Godeps
