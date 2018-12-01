@@ -7,10 +7,9 @@ https://github.com/eduardonunesp/sslb
 main.go#main
 - cli/app.go#CreateAPP()
   - cli/commands#RunServer(c \*cli.Context)
-	configuration := cfg.Setup(filename)
-	server := lb.NewServer(configuration)
-	sslbRPC.StartServer(server)
-    - 
+    - configuration := cfg.Setup(filename)
+    - server := lb.NewServer(configuration)
+    - sslbRPC.StartServer(server)
 
 
 # Sources
