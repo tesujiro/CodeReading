@@ -115,6 +115,16 @@ func init() {
 # Basic code path 3: instructions
 ```go
 // lua/lvm.go 
+
+// MOVE: Copy a value between registers.
+//
+// @args A B
+//
+// R(A) := R(B)
+func (vm *v53) move(instr vm.Instr) {
+	rb := vm.thread().frame().get(instr.B())
+	vm.thread().frame().set(instr.A(), rb)
+}
 ```
 
 # Where is the parser?
