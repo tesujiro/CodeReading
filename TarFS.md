@@ -52,6 +52,24 @@ func ExampleRead() {
 }
 ```
 
+# Basic Data Structure
+```
+type FileSystem struct {
+	index *node
+}
+
+type node struct {
+	os.FileInfo
+	next map[string]*node
+}
+
+type File struct {
+	*tar.Reader
+	f *os.File
+	z *gzip.Reader
+}
+
+```
 # Basic code path 1 : NewFile
 
 
