@@ -6,6 +6,9 @@ https://github.com/Azure/golua
 
 # Basic code path 1 : main - compile - load to chunk - new closure
 cmd/glua/main.go#main
+- lua/lua.go#NewState
+- std/std.go#Open
+  - Load All Standard Libraries
 - lua/lua.go#State.Main
   - lua/auxiliary.go#State.ExecFile(file string)
     - lua/lua.go#State.ExecChunk
