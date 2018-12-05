@@ -1,7 +1,7 @@
 
 # Repository
 - An implementation of the FileSystem interface for tar files.
-https://github.com/posener/tarfs
+- https://github.com/posener/tarfs
 
 # FIleSystem interface
 ```go
