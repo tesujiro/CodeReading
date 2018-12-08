@@ -33,7 +33,7 @@ func main() {
 }
 ```
 # FileSystem interface
-```go
+``` go
 type Fs interface {
     // Create creates a file in the filesystem, returning the file and an
     // error, if any happens.
@@ -80,7 +80,6 @@ type Fs interface {
 ```
 # Sources
 ```
-tree -h
 tree -h
 .
 ├── [9.9K]  LICENSE.txt
