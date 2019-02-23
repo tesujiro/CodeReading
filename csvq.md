@@ -19,7 +19,15 @@ tesujiro$ cat <<EOF | csvq "select key,value where key>5"
 | 7   | ddd   |
 | 9   | eee   |
 +-----+-------+
-tesujiro$
+tesujiro$ printf 'id,name\n01,itemA\n02,itemB\n' >master.csv
+tesujiro$ printf 'id,amount\n01,10\n02,5\n01,3\n01,5\n' >tran.csv
+tesujiro$ csvq 'select name,sum(amount) from master,tran where master.id=tran.id group by master.name'
++--------+-------------+
+|  name  | sum(amount) |
++--------+-------------+
+| itemA  |          18 |
+| itemB  |           5 |
++--------+-------------+
 ```
 
 # Sources
