@@ -31,6 +31,44 @@ func main() {
 ```
 # Basic code path 1 : main - 
 
+main()
+- Run()
+  - Compile()
+	c, err := compiler.NewCompiler(pkgName, compilerConfig)
+	err = c.Compile(pkgName)
+	if err := c.Verify(); err != nil {...}
+	err = interp.Run(c.Module(), c.TargetData(), config.dumpSSA)
+
+# Basic code path 1 : compiler.NewCompiler - 
+    
+- NewCopiler
+func NewCompiler(pkgName string, config Config) (Compiler, error) {...}
+	c := &Compiler{...}
+	c.machine = target.CreateTargetMachine(config.Triple, config.CPU, "", llvm.CodeGenLevelDefault, llvm.RelocStatic, llvm.CodeModelDefault)
+	c.ctx = llvm.NewContext()
+	c.mod = c.ctx.NewModule(pkgName)
+	c.builder = c.ctx.NewBuilder()
+	c.uintptrType = c.ctx.IntType(c.targetData.PointerSize() * 8)
+
+	dummyFuncType := llvm.FunctionType(c.ctx.VoidType(), nil, false)
+	dummyFunc := llvm.AddFunction(c.mod, "tinygo.dummy", dummyFuncType)
+	c.funcPtrAddrSpace = dummyFunc.Type().PointerAddressSpace()
+
+# go-llvm
+c.ctx = llvm.NewContext()
+  - func NewContext() Context    { return Context{C.LLVMContextCreate()} }
+c.mod = c.ctx.NewModule(pkgName)
+  - func (c Context) NewModule(name string) (m Module) {
+	cname := C.CString(name)
+	defer C.free(unsafe.Pointer(cname))
+	m.C = C.LLVMModuleCreateWithNameInContext(cname, c.C)
+	return
+    }
+
+c.builder = c.ctx.NewBuilder()
+c.uintptrType = c.ctx.IntType(c.targetData.PointerSize() * 8)
+
+
 # Files
 ```
 $ tree -h -P "\*.go"
